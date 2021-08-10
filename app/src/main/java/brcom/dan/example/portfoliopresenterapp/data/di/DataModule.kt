@@ -2,6 +2,8 @@ package brcom.dan.example.portfoliopresenterapp.data.di
 
 
 import android.util.Log
+import brcom.dan.example.portfoliopresenterapp.data.repositories.RepoRepositoriesImpl
+import brcom.dan.example.portfoliopresenterapp.data.repositories.RepoRepository
 import brcom.dan.example.portfoliopresenterapp.data.services.GitHubService
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -14,12 +16,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object DataModule {
 
-
     const val BASE_URL = "https://api.github.com"
     const val OK_HTTP = "OkHttp"
 
     fun load() {
-        loadKoinModules(networkModules())
+        loadKoinModules(networkModules() + repositoriesModule())
     }
 
     private fun networkModules(): Module {
@@ -39,6 +40,14 @@ object DataModule {
             }
             single {
                 createService<GitHubService>(get(), get())
+            }
+        }
+    }
+
+    private fun repositoriesModule(): Module{
+        return module {
+            single<RepoRepository> {
+                RepoRepositoriesImpl(get())
             }
         }
     }
