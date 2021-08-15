@@ -1,17 +1,22 @@
 package brcom.dan.example.portfoliopresenterapp.ui
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import androidx.appcompat.widget.SearchView
 import brcom.dan.example.portfoliopresenterapp.R
+import brcom.dan.example.portfoliopresenterapp.core.createDialog
+import brcom.dan.example.portfoliopresenterapp.core.createProgressDialog
+import brcom.dan.example.portfoliopresenterapp.core.hideSoftKeyboard
 import brcom.dan.example.portfoliopresenterapp.databinding.ActivityMainBinding
 import brcom.dan.example.portfoliopresenterapp.presentation.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
+    private val dialog by lazy { createProgressDialog() }
     private val viewModel by viewModel<MainViewModel>()
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
@@ -21,8 +26,21 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
         setSupportActionBar(binding.toolbar)
 
+        viewModel.getRepoList("")
         viewModel.repos.observe(this){
-
+            when(it){
+                MainViewModel.State.Loadind -> dialog.show()
+                is MainViewModel.State.Error -> {
+                    createDialog {
+                        setMessage(it.error.message)
+                    }.show()
+                    dialog.dismiss()
+                }
+                is MainViewModel.State.Success -> {
+                    dialog.dismiss()
+                    binding.rvRepos.adapter = RepoListAdapter(it.list)
+                }
+            }
         }
     }
 
@@ -34,12 +52,14 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        Log.e(TAG, "onQueryTextSubmit: $query")
+        if (query != null) {
+            viewModel.getRepoList(query)
+        }
+        binding.root.hideSoftKeyboard()
         return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        Log.e(TAG, "onQueryTextChange: $newText")
         return true
     }
 
