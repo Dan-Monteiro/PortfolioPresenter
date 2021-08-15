@@ -1,9 +1,7 @@
 package brcom.dan.example.portfoliopresenterapp.ui
 
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import androidx.appcompat.widget.SearchView
 import brcom.dan.example.portfoliopresenterapp.R
