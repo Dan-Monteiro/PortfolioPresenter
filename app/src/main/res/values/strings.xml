@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">PortfolioPresenterApp</string>
     <string name="action_search">Pesquisar</string>
+    <string name="text_label_empty_repositories">Não há reposítório para exibir</string>
 </resources>

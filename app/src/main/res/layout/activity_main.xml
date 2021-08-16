@@ -18,11 +18,23 @@
         android:id="@+id/rv_repos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        tools:visibility="invisible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         tools:listitem="@layout/item_repo"
         tools:itemCount="5"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_empty_repos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_label_empty_repositories"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/rv_repos"
+        app:layout_constraintStart_toStartOf="@+id/rv_repos"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

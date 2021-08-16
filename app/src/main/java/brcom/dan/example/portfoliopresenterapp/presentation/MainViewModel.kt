@@ -34,6 +34,10 @@ class MainViewModel(
         }
     }
 
+    fun checkReposVisibility(list: List<Repository>): Boolean {
+        return list.isEmpty()
+    }
+
     sealed class State {
         object Loadind: State()
         data class Success(val list: List<Repository>) : State()
